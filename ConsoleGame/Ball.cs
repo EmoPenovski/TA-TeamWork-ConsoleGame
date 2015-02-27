@@ -71,7 +71,6 @@ namespace ConsoleGame
                         if (player.Lives > 1)
                         {
                             DrawLostLivesScreen(pad, player);
-
                         }
                         else
                         {

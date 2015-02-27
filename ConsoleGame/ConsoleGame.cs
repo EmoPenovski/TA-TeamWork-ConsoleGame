@@ -75,7 +75,13 @@ namespace ConsoleGame
             }
             else if (array[1] == true)
             {
-                string scoreTitle = @"             __                                     / _\ ___ ___  _ __ ___  ___             \ \ / __/ _ \| '__/ _ \/ __|            _\ \ (_| (_) | | |  __/\__ \            \__/\___\___/|_|  \___||___/ ";
+                string scoreTitle = @"
+            __                         
+           / _\ ___ ___  _ __ ___  ___ 
+           \ \ / __/ _ \| '__/ _ \/ __|
+           _\ \ (_| (_) | | |  __/\__ \
+           \__/\___\___/|_|  \___||___/
+";
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.SetCursorPosition(0, 0);
@@ -113,7 +119,13 @@ namespace ConsoleGame
             }
             else if (array[3] == true)
             {
-                string aboutTitle = @"              _   _                 _                /_\ | |__   ___  _   _| |_             //_\\| '_ \ / _ \| | | | __|           /  _  \ |_) | (_) | |_| | |_            \_/ \_/_.__/ \___/ \__,_|\__| ";
+                string aboutTitle = @"
+             _   _                 _   
+            /_\ | |__   ___  _   _| |_ 
+           //_\\| '_ \ / _ \| | | | __|
+          /  _  \ |_) | (_) | |_| | |_ 
+          \_/ \_/_.__/ \___/ \__,_|\__|
+";
 
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -151,7 +163,14 @@ namespace ConsoleGame
 
         private static void DrawMenu(int top, int left, bool[] array, string[] arrayStr)
         {
-            string gameName = @"     ___         ___                _                 / __\       / __\_ __ ___  __ _| | _____ _ __    /__\//_____ /__\// '__/ _ \/ _` | |/ / _ \ '__|  / \/  \_____/ \/  \ | |  __/ (_| |   <  __/ |     \_____/     \_____/_|  \___|\__,_|_|\_\___|_|                                                    ";
+            string gameName = @"
+    ___         ___                _             
+   / __\       / __\_ __ ___  __ _| | _____ _ __ 
+  /__\//_____ /__\// '__/ _ \/ _` | |/ / _ \ '__|
+ / \/  \_____/ \/  \ | |  __/ (_| |   <  __/ |   
+ \_____/     \_____/_|  \___|\__,_|_|\_\___|_|   
+                                               
+";
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition(0, 0);
             Console.Write(gameName);
@@ -282,7 +301,13 @@ namespace ConsoleGame
         {
             if (over)
             {
-                string gameOverTitle = @"    ___                       ___                    / _ \__ _ _ __ ___   ___  /___\__   _____ _ __   / /_\/ _` | '_ ` _ \ / _ \//  //\ \ / / _ \ '__| / /_\\ (_| | | | | | |  __/ \_//  \ V /  __/ |    \____/\__,_|_| |_| |_|\___\___/    \_/ \___|_|  ";
+                string gameOverTitle = @"
+   ___                       ___                 
+  / _ \__ _ _ __ ___   ___  /___\__   _____ _ __ 
+ / /_\/ _` | '_ ` _ \ / _ \//  //\ \ / / _ \ '__|
+/ /_\\ (_| | | | | | |  __/ \_//  \ V /  __/ |   
+\____/\__,_|_| |_| |_|\___\___/    \_/ \___|_| 
+";
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.SetCursorPosition(0, 0);
@@ -311,7 +336,13 @@ namespace ConsoleGame
 
         private static void DrawInstructions()
         {
-            string title = @"     _____           _                   _            \_   \_ __  ___| |_ _ __ _   _  ___| |_ ___       / /\/ '_ \/ __| __| '__| | | |/ __| __/ __|   /\/ /_ | | | \__ \ |_| |  | |_| | (__| |_\__ \   \____/ |_| |_|___/\__|_|   \__,_|\___|\__|___/ ";
+            string title = @"
+    _____           _                   _       
+    \_   \_ __  ___| |_ _ __ _   _  ___| |_ ___ 
+     / /\/ '_ \/ __| __| '__| | | |/ __| __/ __|
+  /\/ /_ | | | \__ \ |_| |  | |_| | (__| |_\__ \
+  \____/ |_| |_|___/\__|_|   \__,_|\___|\__|___/
+";
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition(0, 0);
