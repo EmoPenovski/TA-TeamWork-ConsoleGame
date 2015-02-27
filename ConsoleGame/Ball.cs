@@ -9,7 +9,6 @@ namespace ConsoleGame
         private int y;
         private int oldX;
         private int oldY;
-        private bool stopDiagonal;
         private bool rightDirection;
         private bool topDirection;
         private ConsoleColor color;
@@ -19,7 +18,6 @@ namespace ConsoleGame
             this.x = x;
             this.y = y;
             this.color = color;
-            this.stopDiagonal = false;
             this.rightDirection = true;
             this.topDirection = true;
         }
@@ -46,60 +44,121 @@ namespace ConsoleGame
 
             if (this.IsBottomWallCollision())
             {
-
-
-                if (pad.X <= this.x && pad.X + pad.Width >= this.x)
+                if (rightDirection == true)
                 {
-                    this.topDirection = true;
-                    this.y -= 1;
-
-                    //Check which part of the pad is hit
-                    if (pad.X + pad.Width / 2 == this.x)
+                    if (this.y == Console.WindowHeight - 1 && this.x == pad.X)
                     {
-                        this.stopDiagonal = true;
+                        this.topDirection = true;
+                        rightDirection = false;
+                        this.y = y - 1;
+                        this.x = x - 1;
                     }
-                    else if (pad.X == this.x)
+                    else if (this.y == Console.WindowHeight - 1 && (this.x == pad.X + 1) || (this.x == pad.X + 2) || (this.x == pad.X + 3))
                     {
-                        this.rightDirection = false;
-                        this.stopDiagonal = false;
+                        this.topDirection = true;
+                        rightDirection = true;
+                        this.y = y - 1;
+                    }
+                    else if (this.y == Console.WindowHeight - 1 && ((this.x == pad.X + 4) || (this.x == pad.X + 5)))
+                    {
+                        this.topDirection = true;
+                        rightDirection = true;
+                        this.y = y - 1;
+                        this.x = x + 1;
                     }
                     else
                     {
-                        this.rightDirection = true;
-                        this.stopDiagonal = false;
+                        if (player.Lives > 1)
+                        {
+                            DrawLostLivesScreen(pad, player);
+
+                        }
+                        else
+                        {
+                            DrawGameOverScreen();
+                        }
+
                     }
                 }
                 else
                 {
-                    if (player.Lives > 0)
+                    if (this.y == Console.WindowHeight - 1 && this.x == pad.X + 4)
                     {
-                        player.Lives--;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.SetCursorPosition(ConsoleGame.windowWidth / 3 - 1, ConsoleGame.windowHeight / 2);
-                        if (player.Lives == 1)
-                        {
-                            Console.Write("You have {0} life left", player.Lives);
-                        }
-                        else
-                        {
-                            Console.Write("You have {0} lives left", player.Lives);
-                        }
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Thread.Sleep(1500);
-                        this.x = ConsoleGame.windowWidth / 2;
-                        this.y = ConsoleGame.windowHeight - 2;
-                        pad.X = ConsoleGame.windowWidth / 2 - pad.Width / 2;
                         this.topDirection = true;
-                        ConsoleGame.Play();
+                        rightDirection = true;
+                        this.y = y - 1;
+                        this.x = x + 1;
+                    }
+                    else if (this.y == Console.WindowHeight - 1 && (this.x == pad.X + 3) || (this.x == pad.X + 2) || (this.x == pad.X + 1))
+                    {
+                        this.topDirection = true;
+                        rightDirection = false;
+                        this.y = y - 1;
+
+                    }
+
+                    else if (this.y == Console.WindowHeight - 1 && ((this.x == pad.X) || (this.x == pad.X - 1)))
+                    {
+                        this.topDirection = true;
+                        rightDirection = false;
+                        this.y = y - 1;
+                        this.x = x - 1;
 
                     }
                     else
                     {
-                        ConsoleGame.over = true;
-                    }
+                        if (player.Lives > 1)
+                        {
+                            DrawLostLivesScreen(pad, player);
 
+                        }
+                        else
+                        {
+
+                            DrawGameOverScreen();
+                        }
+                    }
                 }
             }
+        }
+
+        private void DrawLostLivesScreen(Pad pad, Player player)
+        {
+            Draw('*');
+            Console.Beep(150, 350);
+            player.Lives--;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(ConsoleGame.WindowWidth / 3 - 1, ConsoleGame.WindowHeight / 2);
+            if (player.Lives == 1)
+            {
+                Console.Write("You have {0} life left", player.Lives);
+            }
+            else
+            {
+                Console.Write("You have {0} lives left", player.Lives);
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Thread.Sleep(1500);
+            this.x = ConsoleGame.WindowWidth / 2;
+            this.y = ConsoleGame.WindowHeight - 2;
+            pad.X = ConsoleGame.WindowWidth / 2 - pad.Width / 2;
+            this.topDirection = true;
+            ConsoleGame.Play();
+        }
+
+        private void DrawGameOverScreen()
+        {
+            Draw('*');
+            Console.Beep(222, 200);
+            Console.Beep(200, 200);
+            Console.Beep(180, 200);
+            Console.Beep(150, 350);
+            string gameOver = "G A M E   O V E R";
+            Console.SetCursorPosition(ConsoleGame.WindowWidth / 2 - gameOver.Length / 2, ConsoleGame.WindowHeight / 2);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(gameOver);
+            Thread.Sleep(1000);
+            ConsoleGame.over = true;
         }
 
         public void CheckBrickCollision(Brick[,] bricks, Player player)
@@ -107,12 +166,65 @@ namespace ConsoleGame
             try
             {
                 if (!bricks[this.y, this.x].IsBroken)
-                {                   
+                {
+                    Console.Beep(497, 40);
                     player.Score++;
+                    if (player.Score % 10 == 0 && player.Score != 0)
+                    {
+                        ConsoleGame.gameLevel++;
+                        ConsoleGame.gameSpeed = ConsoleGame.InitialGameSpeed - ConsoleGame.gameLevel * 4;
+                    }
+
                     printScore(player);
                     bricks[this.y, this.x].IsBroken = true;
-                    this.topDirection = !this.topDirection;
-                    this.rightDirection = !this.rightDirection;
+                    //KOD DRAGO
+                    if (this.topDirection == true)
+                    {
+                        this.topDirection = false;
+
+                        if (this.rightDirection == true)
+                        {
+                            if (bricks[this.y + 1, this.x + 1].IsBroken == false)
+                            {
+                                this.rightDirection = false;
+                            }
+                        }
+                        else
+                        {
+                            if (bricks[this.y + 1, this.x - 1].IsBroken == false)
+                            {
+                                this.rightDirection = true;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        this.topDirection = true;
+
+                        if (this.rightDirection == true)
+                        {
+                            if (bricks[this.y - 1, this.x - 1].IsBroken == false)
+                            {
+                                this.rightDirection = false;
+                            }
+                            else
+                            {
+                                this.rightDirection = true;
+                            }
+                        }
+                        else
+                        {
+                            if (bricks[this.y - 1, this.x + 1].IsBroken == false)
+                            {
+                                this.rightDirection = true;
+                            }
+                            else
+                            {
+                                this.rightDirection = false;
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception) { }
@@ -121,26 +233,25 @@ namespace ConsoleGame
 
         public static void printScore(Player player)
         {
-            Console.SetCursorPosition(Console.WindowWidth/2-4, 0);
-            Console.WriteLine("Score: {0}" , player.Score);
+            Console.SetCursorPosition((Console.WindowWidth / 2) - 9, 0);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Score: {0} Level: {1}", player.Score, ConsoleGame.gameLevel);
+            Console.SetCursorPosition((Console.WindowWidth / 2) - 13, 1);
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("Press P to pause the game.");
         }
 
         public void ChangePosition()
         {
             this.oldX = this.x;
             this.oldY = this.y;
-
-            if (!this.stopDiagonal)
-            {
-                this.x = this.rightDirection ? this.x + 1 : this.x - 1;
-            }
-
+            this.x = this.rightDirection ? this.x + 1 : this.x - 1;
             this.y = this.topDirection ? this.y - 1 : this.y + 1;
         }
 
         public bool IsRightWallCollision()
         {
-            return this.x == ConsoleGame.windowWidth;
+            return this.x == ConsoleGame.WindowWidth;
         }
 
         public bool IsLeftWallCollision()
@@ -150,12 +261,12 @@ namespace ConsoleGame
 
         public bool IsBottomWallCollision()
         {
-            return this.y == ConsoleGame.windowHeight - 1;
+            return this.y == ConsoleGame.WindowHeight - 1;
         }
 
         public bool IsTopWallCollision()
         {
-            return this.y == +1;
+            return this.y == +2;
         }
 
         public void Draw(char symbol)

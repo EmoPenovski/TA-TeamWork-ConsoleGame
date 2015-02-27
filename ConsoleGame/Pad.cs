@@ -32,13 +32,13 @@ namespace ConsoleGame
 
         public void ChangePosition(ConsoleKeyInfo key)
         {
-            
+
             if (key.Key == ConsoleKey.LeftArrow && this.x > 0)
             {
                 this.x--;
             }
 
-            if (key.Key == ConsoleKey.RightArrow && this.x + this.width < ConsoleGame.windowWidth - 1)
+            if (key.Key == ConsoleKey.RightArrow && this.x + this.width < ConsoleGame.WindowWidth - 1)
             {
                 this.x++;
             }
@@ -54,7 +54,6 @@ namespace ConsoleGame
                         cont = true;
                         break;
                     }
-                    
                 }
             }
         }
@@ -65,10 +64,12 @@ namespace ConsoleGame
 
             //Clear old pad if any
             Console.SetCursorPosition(0, this.y);
-            Console.Write(new string(' ', ConsoleGame.windowWidth - 1));
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write(new string(' ', ConsoleGame.WindowWidth - 1));
 
             //Draw new pad
             Console.SetCursorPosition(this.x, this.y);
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Write(new string(symbol, this.width));
         }
     }
